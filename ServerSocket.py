@@ -6,8 +6,8 @@ class ServerSocket:
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
     def __init__(self):
-        soc.bind(('0.0.0.0', 8000))
-        soc.listen(1)
+        self.soc.bind(('0.0.0.0', 8000))
+        self.soc.listen(1)
 
     def targetHandler(self, conn, client_add):
         while True:
@@ -20,10 +20,11 @@ class ServerSocket:
 
     def start(self):
         while True:
-            connection, client_address = soc.accept() 
+            connection, client_address = self.soc.accept() 
             thread = threading.Thread(target=self.targetHandler, args=(connection, client_address))
             thread.daemon = True
             thread.start()
-            connections.append(connection)
-            print(connections)
-            
+            self.connections.append(connection)
+            print(self.connections)
+
+ServerSocket().start()
